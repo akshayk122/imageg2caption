@@ -1,31 +1,23 @@
-# Use Python 3.9 slim base image
+# Use official Python runtime as base image
 FROM python:3.9-slim
 
 # Set working directory in container
 WORKDIR /app
 
-# Copy requirements file
+# Copy requirements.txt (if you have one)
 COPY requirements.txt .
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Python dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy the rest of your application
 COPY . .
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+# Make port available to the world outside the container
+ENV PORT 8080
 
-# Expose the port the app runs on
-ENV PORT=8080
-EXPOSE $PORT
+# Set environment variables for Gunicorn
+ENV PYTHONUNBUFFERED True
 
-# Command to run the application
+# Run Gunicorn with your specified configuration
 CMD exec gunicorn --workers=1 --threads=2 --keep-alive 0 --bind :$PORT app:app

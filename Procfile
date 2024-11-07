@@ -1,1 +1,0 @@
-web: gunicorn --workers=1 --threads=2 --keep-alive 0 --bind :$PORT app:app

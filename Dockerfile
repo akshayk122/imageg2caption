@@ -1,6 +1,12 @@
 # Use official Python runtime as base image
 FROM python:3.9-slim
 
+# Install system dependencies required for Pillow
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libc-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set working directory in container
 WORKDIR /app
 
@@ -16,9 +22,12 @@ COPY . .
 # Make port available to the world outside the container
 ENV PORT 8080
 
-# Set environment variables for Gunicorn
+# Set environment variables for Gunicorn and Python
 ENV PYTHONUNBUFFERED True
 ENV PYTHONPATH /app
 
-# Run Gunicorn with main.py instead of app.py
-CMD exec gunicorn --workers=1 --threads=2 --keep-alive 0 --bind :$PORT main:app
+# Create directory for Google Cloud credentials
+RUN mkdir -p /root/.config/gcloud
+
+# Run Gunicorn
+CMD exec gunicorn --workers=1 --threads=2 --keep-alive 0 --timeout 0 --bind :$PORT main:app

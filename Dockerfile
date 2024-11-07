@@ -4,7 +4,7 @@ FROM python:3.9-slim
 # Set working directory in container
 WORKDIR /app
 
-# Copy requirements.txt (if you have one)
+# Copy requirements.txt
 COPY requirements.txt .
 
 # Install dependencies
@@ -18,6 +18,7 @@ ENV PORT 8080
 
 # Set environment variables for Gunicorn
 ENV PYTHONUNBUFFERED True
+ENV PYTHONPATH /app
 
-# Run Gunicorn with your specified configuration
-CMD exec gunicorn --workers=1 --threads=2 --keep-alive 0 --bind :$PORT app:app
+# Run Gunicorn with main.py instead of app.py
+CMD exec gunicorn --workers=1 --threads=2 --keep-alive 0 --bind :$PORT main:app

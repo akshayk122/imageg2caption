@@ -1,5 +1,5 @@
 # Use official Python runtime as base image
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 # Install system dependencies required for Pillow
 RUN apt-get update && apt-get install -y \
@@ -30,4 +30,4 @@ ENV PYTHONPATH /app
 RUN mkdir -p /root/.config/gcloud
 
 # Run Gunicorn
-CMD exec gunicorn --workers=1 --threads=2 --keep-alive 0 --timeout 0 --bind :$PORT main:app
+CMD exec gunicorn --workers=1 --threads=2 --keep-alive 0 --timeout 0 --bind :$PORT app:app

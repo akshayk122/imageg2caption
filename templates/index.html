@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const fileInput = document.querySelector('input[type="file"]');
+            if (!fileInput.files.length) {
+                alert('Please choose a file to upload.');
+                return false; 
+            }
+            return true; 
+        }
+    </script>
+</head>
+<body>
+    <h1>Upload an Image</h1>
+    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <input type="file" name="file" id="file" accept="image/*" required>
+        <input type="submit" value="Upload">
+    </form>
+
+    {% if success %}
+        <p style="color: green;">{{ success }}</p>
+    {% endif %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <h2>Uploaded Images</h2>
+    <div>
+        {% if image_links %}
+            <ul>
+                {% for filename in image_links %}
+                    <li>
+                        <a href="{{ url_for('view_image', filename=filename) }}" target="_blank">{{ filename }}</a> 
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No images available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 
-# ImageG2Caption 🖼️➡️📝
+# Image2Caption 🖼️➡️📝
 
 **ImageG2Caption** is a project designed to generate captions for images using advanced machine learning techniques. The project is built primarily in Python, with HTML for the front-end interface and Docker for containerization.
 
